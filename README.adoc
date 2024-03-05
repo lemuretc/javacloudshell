@@ -13,45 +13,48 @@ Kosta Rebrov copy from (Rahman Usta)
 
 CloudTerm is a Spring Boot Java Application Web terminal running in the WebShpere Libery server. You can refer to the original repository for a standalone Java version 
 
-image:://image::images/Image-310817-062349.305.png[width=900]
+image::images/Image-310817-062349.305.png[width=900]
 
 == How to install
+
+* Modify SecurityConfig.java file to cater for your authentification details
+
+
+[source,java]
+----
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+            .inMemoryAuthentication()
+                .withUser("user")
+                .password("pass")
+                .roles("USER");
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        // For simplicity, using NoOpPasswordEncoder here.
+        // In real-world scenarios, you should use a stronger password encoder.
+        return NoOpPasswordEncoder.getInstance();
+    }
+}
+----
 
 Using Maven put the package together
 
 > mvn clean
+
 > mvn package
 
-then place files into dropin directory. In WebSphere Liberty, the dropins directory is monitored for changes by default, so files placed there should be hot deployed automatically. However, if you want to ensure that hot deployment is enabled or force a reload, you can use the following methods:
+Build process should pull all required dependency automatically. After successful build you should have WAR file in the target directory.
+Place WAR file into dropin directory. In WebSphere Liberty, the dropins directory is monitored for changes by default, so files placed there should be hot deployed automatically. However, if you want to ensure that hot deployment is enabled or force a reload, you can use the following methods:
 Enable Automatic Deployment:
 
-By default, WebSphere Liberty automatically deploys applications placed in the dropins directory. Make sure your Liberty server is configured correctly to monitor this directory. The configuration file (server.xml) should include something like this:
-
-[source,xml]
-----
-<quickStartSecurity userName="admin" userPassword="admin"/>
-----
-
-
-=== Run on JVM
-
-[source,bash]
-----
-git clone https://github.com/rahmanusta/cloudterm.git
-cd cloudterm
-mvn clean install
-cd target
-java -jar cloudterm.jar
-----
-
-=== Run on Docker
-
-Open the browser http://localhost:8080
-
-[source,bash]
-----
-docker run -it --rm -p 8080:8080 rahmanusta/cloudterm
-----
+By default, WebSphere Liberty automatically deploys applications placed in the dropins directory. Make sure your Liberty server is configured correctly to monitor this directory. You can force a reload by touching the server.xml file or the configDropins/overrides directory where you may have additional configuration files. This action will trigger Liberty to re-read the configuration and redeploy any applications or features.
 
 == License
 
