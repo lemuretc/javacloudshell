@@ -12,6 +12,7 @@ Kosta Rebrov copy from (Rahman Usta)
 == About
 
 CloudTerm is a Spring Boot Java Application Web terminal running in the WebShpere Libery server. You can refer to the original repository for a standalone Java version 
+Original repo: "https://github.com/rahmanusta/cloudterm" 
 
 image::images/Image-310817-062349.305.png[width=900]
 
