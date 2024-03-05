@@ -17,7 +17,7 @@ image::images/Image-310817-062349.305.png[width=900]
 
 == How to install
 
-* Modify SecurityConfig.java file to cater for your authentification details
+* Modify SecurityConfig.java file to cater for your authentication details
 
 
 [source,java]
